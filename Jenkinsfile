@@ -40,6 +40,7 @@ pipeline {
                     
                     // 1. Build the image using the Git Commit hash as the tag
                     // Using ${GIT_COMMIT} inside double quotes for proper interpolation
+                    sh "docker login -u couragethedog"
                     sh "docker build -t couragethedog/numeric-app:${GIT_COMMIT} ."
                     
                     // 2. Push the specific tag to Docker Hub
