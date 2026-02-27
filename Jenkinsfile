@@ -25,12 +25,12 @@ pipeline {
         }
            stage('Docker Build and Push') {
             steps {
-              // withDockerRegistry(credentialsId: 'docker-hub', url: 'https://quay.io/')  {
-              //   sh 'printenv'
-              //   sh 'docker build -t quay.io/anshuk6469/numeric-app:""$GIT_COMMIT"" .'
-              //   sh 'docker push quay.io/anshuk6469/numeric-app:""$GIT_COMMIT""'
+              withDockerRegistry(credentialsId: 'docker-hub', url: 'https://hub.docker.com/')  {
+                sh 'printenv'
+                sh 'docker build -t hub.docker.com/couragethedog/numeric-app:""$GIT_COMMIT"" .'
+                sh 'docker push hub.docker.com/couragethedog/numeric-app:""$GIT_COMMIT""'
               sh "echo 'build and push to repository'"
-            // }
+            }
          }
       }
    }   
