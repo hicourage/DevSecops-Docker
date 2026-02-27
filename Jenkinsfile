@@ -30,7 +30,7 @@ pipeline {
               //   sh 'docker build -t quay.io/anshuk6469/numeric-app:""$GIT_COMMIT"" .'
               //   sh 'docker push quay.io/anshuk6469/numeric-app:""$GIT_COMMIT""'
               sh "echo 'build and push to repository'"
-            }
+            // }
          }
       }
    }   
