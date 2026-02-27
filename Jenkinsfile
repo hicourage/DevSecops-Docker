@@ -35,20 +35,23 @@ pipeline {
       // }
         stage('Docker Build and Push') {
             steps {
-                // Ensure credentialsId matches the ID in Jenkins Global Credentials
-                withDockerRegistry(credentialsId: 'docker-hub', url: 'https://index.docker.io') {
+                // withDockerRegistry handles login automatically using your credentialsId
+                withDockerRegistry(credentialsId: 'docker-hub', url: 'https://index.docker.io/v1/') {
                     
-                    // 1. Build the image using the Git Commit hash as the tag
-                    // Using ${GIT_COMMIT} inside double quotes for proper interpolation
-                    sh "docker login -u couragethedog"
+                    // 1. Build and tag with Git Commit
                     sh "docker build -t couragethedog/numeric-app:${GIT_COMMIT} ."
                     
-                    // 2. Push the specific tag to Docker Hub
-                    sh "docker push couragethedog/numeric-app:${GIT_COMMIT}"
+                    // 2. Add the 'latest' tag to the image we just built
+                    sh "docker tag couragethedog/numeric-app:${GIT_COMMIT} couragethedog/numeric-app:latest"
                     
-                    sh "echo 'Build and push to repository completed for commit: ${GIT_COMMIT}'"
+                    // 3. Push both tags to Docker Hub
+                    sh "docker push couragethedog/numeric-app:${GIT_COMMIT}"
+                    sh "docker push couragethedog/numeric-app:latest"
+                    
+                    sh "echo 'Successfully pushed tags: ${GIT_COMMIT} and latest'"
                 }
             }
         }
+
    }   
 }
